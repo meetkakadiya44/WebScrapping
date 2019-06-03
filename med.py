@@ -6,8 +6,7 @@ Created on Thu May 23 14:41:51 2019
 """
 
 from bs4 import BeautifulSoup as bs
-import urllib.request
-
+import urllib
 import string 
 
 
@@ -136,52 +135,39 @@ for i in range(len(reallist)):
 
 #-------------------BELOW CODE IS USED TO TRAVERSE EVERY DISEASES AND MEDICINES CONTAINED IN EACH DIESEASE-----------------------------
 
-'''s=[]
-count1=0
-p=0
+s=[]
+count1=1
+medcount=1
+
+z=0
 for i in range(len(reallist)):
-    s=make_soup("https://www.netmeds.com/prescriptions/"+reallist[i] )
-    # ----------------------LET'S CHECK THE FORMAT OF THE PAGE----------------------------------
-    #----------------------IF THE THE FORMAT HAS A LIST OF ALPHABETS THEN I'LL USE THE WHILE LOOP ITERATIONS-------------------------------
-    #-----------------------AND IF IT DOESN'T CONTAIN THE LIST THEN i WOULD USE DIRECT METHOD TO ACCESS ALL THE MEDICINES---------SIMPLE---------------
-    dd= s.find('div', {'id' : 'prescriptions_products-nav'}).find('div',{'class':'ln-letters'}).find('a')
+    s=make_soup("https://www.netmeds.com/prescriptions/"+ reallist[i] )
     
-    print(dd)
-   if dd:
-        print('hi')
     try:
+        p=0
         while(p<26):
             ac= s.find('div', {'id' : 'prescriptions_products'}).findAll("ul", {"class" : "alpha-drug-list"})[p]
-           
+            
             for j in ac.findAll('a',href=True):
                 print(j['href'])
-                count1=count1 + 1
+                #f= open('result1.txt', 'a')
+                #f.write(j['href'] )
+                #f.close()
+                medcount=medcount+1
             
             p=p+1
+            
+        
+        
     #------------------------- IF I GOT AN ERROR RELATED T0 WHILE LOOP WWE WOULD JUST PASS THE ERROR.--------------------------------
     except:
-        print("2")
-
-
-print(count1)
-
-'''
-
-
-
-
-s=make_soup("https://www.netmeds.com/prescriptions/"+reallist[0] )
-l=s.findAll('div', {'id' : 'prescriptions_products-nav'})
-for i in l:
+        print(" \n ------------------------------------------------------------- \n ")
     
-    print(i)
-
-
-
-
-
-
-
-        
-        
-        
+    
+    print(count1)
+    count1 = count1 +1
+    
+    #print(" -------")
+    #print(" ")
+    
+print(medcount)
