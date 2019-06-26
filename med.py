@@ -8,7 +8,7 @@ Created on Thu May 23 14:41:51 2019
 from bs4 import BeautifulSoup as bs
 import urllib
 import string
-
+import os
 
       
 
@@ -219,6 +219,8 @@ tab4name="DIRECTIONS FOR USE:-"
 tab5name="SIDE EFFECTS:-"
 tab6name="MORE INFORMATION:-"
 
+headers="NAME,PRICE,COMPANY"
+
 f2=open('medlist.txt', 'r')
 lines= f2.readlines()
 for i in lines[x:]:
@@ -228,7 +230,8 @@ for i in lines[x:]:
     price=s.find('div', class_='essential-container').find('span', class_='pull-left').find('span', class_='price').text
     print(names.lstrip())
     print(price)
-    
+    company_name=s.find('div', class_='essential-container').find('a', class_='p_manuf').text
+    print('COMPANY NAME:' + company_name)
     p=s.find('div', id_='prod_desc')
     try:
         drug=s.find('div',class_='prescript-txt')
@@ -267,7 +270,7 @@ for i in lines[x:]:
         
         
         
-        
+                
         '''/////////////////////////////////////////--TAB2--////////////////////////////////////////////////////'''
         print(tab2name)
         tab2 = s.find('div', class_='col-sm-9')
@@ -321,57 +324,71 @@ for i in lines[x:]:
                 print('-' +li4.text)
                 
         except:
-            nnn=0
+            pass
         '''/////////////////////////////////////////////////////////////////////////////////////////////'''   
        
         
         
         
-        '''/////////////////////////////////////////--TAB5--////////////////////////////////////////////////////        
+        '''/////////////////////////////////////////--TAB5--////////////////////////////////////////////////////        '''
         print(tab5name)
-        tab5 =s.find_all('div', class_='col-md-12')[2]
+        tab5 =s.find_all('div', class_='col-sm-9')[1]
         
         
-        print("COMMON:")
-        tab5_2=tab5.find_all('div', class_="inner-content")
         
+            
         try:
-            for li5_2 in tab5_2.find_all('li', recursive=True):
-                print('-' +li5_2.text)
+            for li5 in tab5.find_all('li', recursive=True):
+                print('-' +li5.text)
                 
         except:
             nnn=0
         
         
+        '''/////////////////////////////////////////////////////////////////////////////////////////////'''   
         
         
-        print("SERIOUS:")
-        tab5_1=tab5.find('div', id_="serious-side-effects").find('div', class_="inner-content")
+        '''/////////////////////////////////////////--TAB6--////////////////////////////////////////////////////        '''
+        
+        print(tab6name)
+        
+        tab6 =s.find_all('div', class_='col-sm-9')[2]
+        
+        
+        
+            
         try:
-            print(tab5_1.p.text)
-        except:
-            nnn=0
-        
-        try:
-            for li5_1 in tab5_1.find_all('li', recursive=True):
-                print('-' +li5_1.text)
+            for li6 in tab6.find_all('li', recursive=True):
+                print('-' +li6.text)
                 
         except:
             nnn=0
         
+        
+        '''/////////////////////////////////////////////////////////////////////////////////////////////'''
+     
        
+
         
-        
-        
-        '''
-        
-        
-        
-       
-        
+            
     except:
         nnn=0  #do nothing, just skip the non descriptive types, for the time being
     
+    '''/////////////////////////////////////////--PRODUCT ALTERNATIVES--////////////////////////////////////////////////////        '''
+        
+    
+    try:
+        print('PRODUCT_ALTERNATIVES==============')
+        altmed=s.find('div', class_='accordion_body accordion-first').find('table', class_='generic_list')
+        for m in altmed.find_all('tr'):
+            print(m.find_all('td')[0].text)
+            print("price:" + m.find_all('td')[2].span.text)
+    except:
+        pass
+        
+        
+    '''/////////////////////////////////////////////////////////////////////////////////////////////'''
+       
     print(str(counter) + "---------/////////////////////////////////////")
     print()
     counter=counter+1
